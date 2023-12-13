@@ -18,7 +18,11 @@
     <script src="./static/stlite/stlite.js"></script>
     <script>
       stlite.mount(
-        `
+  {
+    disableLoadingToasts: true,
+    entrypoint: "streamlit_app.py", // The target file of the `streamlit run` command
+    files: {
+      "streamlit_app.py": `
 import streamlit as st
 import pandas as pd
 import asyncio
@@ -50,6 +54,8 @@ if st.toggle("Show new features", value=True):
               await asyncio.sleep(3)
               status.update(label="Click successful!")
 `,
+    },
+  },
         document.getElementById("root")
       );
     </script>
