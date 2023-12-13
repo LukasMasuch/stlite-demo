@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>stlite app - Streamlit 1.29</title>
+    <link
+      rel="stylesheet"
+      href="./static/stlite/stlite.css"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="./static/stlite/stlite.js"></script>
+    <script>
+      stlite.mount(
+        `
+import streamlit as st
+import pandas as pd
+import asyncio
+
+with st.container(border=True):
+    st.write(f"Welcome to stlite with **Streamlit {st.__version__}** 👋")
+  
+if st.toggle("Show new features", value=True):
+    st.link_button("Open stlite", "https://github.com/whitphx/stlite")
+    
+
+    df = pd.DataFrame(
+        [
+          {"command": "st.selectbox", "rating": 4, "is_widget": True},
+          {"command": "st.balloons", "rating": 5, "is_widget": False},
+          {"command": "st.time_input", "rating": 3, "is_widget": True},
+      ]
+    )
+    edited_df = st.data_editor(df, num_rows="dynamic", use_container_width=True)
+
+    favorite_command = edited_df.loc[edited_df["rating"].idxmax()]["command"]
+    st.markdown(f"Your favorite command is **{favorite_command}** 🎈")
+
+    if st.button("Click me!"):
+        st.toast("🎉 Thanks for clicking!")
+    
+    if st.button("Click me as well!"):
+        with st.status("Processing click...") as status:
+              await asyncio.sleep(3)
+              status.update(label="Click successful!")
+`,
+        document.getElementById("root")
+      );
+    </script>
+  </body>
+</html>
